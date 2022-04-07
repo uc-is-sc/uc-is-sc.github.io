@@ -40,7 +40,7 @@
   <span class="quoted"><span class="quoted">"<span class="free">RR</span> <span class="free"><span class="bound"><span class="entity">p</span></span></span> <span class="free"><span class="bound"><span class="entity">f</span></span></span> <span class="main">≡</span> RRgen ple <span class="free"><span class="bound"><span class="entity">p</span></span></span> <span class="free"><span class="bound"><span class="entity">f</span></span></span>"</span></span>
 
 
-<span class="keyword1"><span class="command">locale</span></span> composition <span class="main">=</span> 
+<span class="keyword1"><span class="command">locale</span></span> composition <span class="main">=</span>
   <span class="keyword2"><span class="keyword">assumes</span></span> par_decomp<span class="main">:</span> <span class="comment1">(* parallel decomposition (for pink programs using red programs) *)</span>
   <span class="quoted"><span class="quoted">"<span class="main">∀</span> <span class="main">(</span><span class="bound">A</span><span class="main">::</span><span class="tfree">'p</span> ctxt<span class="main">)</span> <span class="main">(</span><span class="bound">P1</span><span class="main">::</span><span class="tfree">'p</span> prgm<span class="main">)</span> <span class="main">(</span><span class="bound">P2</span><span class="main">::</span><span class="tfree">'r</span> prgm<span class="main">)</span> <span class="main">.</span>
              <span class="main">∃</span> <span class="main">(</span><span class="bound">A1</span><span class="main">::</span><span class="tfree">'p</span> ctxt<span class="main">)</span> <span class="main">(</span><span class="bound">A2</span><span class="main">::</span><span class="tfree">'r</span> ctxt<span class="main">)</span><span class="main">.</span>
@@ -50,16 +50,65 @@
               <span class="main">(</span><span class="bound">A1</span><span class="main">::</span><span class="tfree">'p</span> ctxt<span class="main">)</span> <span class="main">(</span><span class="bound">A2</span><span class="main">::</span><span class="tfree">'r</span> ctxt<span class="main">)</span><span class="main">.</span>
        <span class="bound">A1</span> <span class="main">∥</span> <span class="bound">A2</span> <span class="main">&gt;&lt;</span> <span class="bound">P1</span> <span class="main">∘∘</span> <span class="bound">P2</span> <span class="main">≲</span> <span class="bound">A1</span> <span class="main">&gt;&lt;</span> <span class="bound">P1</span> <span class="main">∘∘∘</span> <span class="bound">A2</span> <span class="main">&gt;&lt;</span> <span class="bound">P2</span>"</span></span>
   <span class="keyword2"><span class="keyword">and</span></span> inter_decomp<span class="main">:</span> <span class="comment1">(* intertwined composition (for pink programs using blue programs) *)</span>
-  <span class="quoted"><span class="quoted">"<span class="main">∀</span> <span class="main">(</span><span class="bound">P1</span><span class="main">::</span><span class="tfree">'p</span> prgm<span class="main">)</span> <span class="main">(</span><span class="bound">P2</span><span class="main">::</span><span class="tfree">'b</span> prgm<span class="main">)</span> 
-              <span class="main">(</span><span class="bound">A1</span><span class="main">::</span><span class="tfree">'p</span> ctxt<span class="main">)</span> <span class="main">(</span><span class="bound">A2</span><span class="main">::</span><span class="tfree">'b</span> ctxt<span class="main">)</span><span class="main">.</span>
-<span class="bound">A1</span> <span class="main">&gt;&lt;</span> <span class="bound">P1</span> <span class="main">∘∘∘</span> <span class="bound">A2</span> <span class="main">&gt;&lt;</span> <span class="bound">P2</span>  <span class="main">≲</span>
-       <span class="bound">A1</span> <span class="main">∥</span> <span class="bound">A2</span> <span class="main">&gt;&lt;</span> <span class="bound">P1</span> <span class="main">∘∘</span> <span class="bound">P2</span> "</span></span>
+  <span class="quoted"><span class="quoted">"<span class="main">∀</span> <span class="main">(</span><span class="bound">P1</span><span class="main">::</span><span class="tfree">'p</span> prgm<span class="main">)</span> <span class="main">(</span><span class="bound">P2</span><span class="main">::</span><span class="tfree">'b</span> prgm<span class="main">)</span> <span class="bound">A1</span> <span class="bound">A2</span> <span class="main">.</span>
+    <span class="bound">A1</span> <span class="main">&gt;&lt;</span> <span class="bound">P1</span> <span class="main">∘∘∘</span> <span class="bound">A2</span> <span class="main">&gt;&lt;</span> <span class="bound">P2</span>  <span class="main">≲</span>   <span class="bound">A1</span> <span class="main">∥</span> <span class="bound">A2</span> <span class="main">&gt;&lt;</span> <span class="bound">P1</span> <span class="main">∘∘</span> <span class="bound">P2</span> "</span></span>
   <span class="keyword2"><span class="keyword">and</span></span>  const_elim<span class="main">:</span> <span class="comment1">(* constant elimination (for plugging substituting red with blue in pink contexts*)</span>
   <span class="quoted"><span class="quoted">"<span class="main">∀</span> <span class="main">(</span><span class="bound">redW</span><span class="main">::</span><span class="tfree">'r</span> whle<span class="main">)</span> <span class="main">(</span><span class="bound">blueW</span><span class="main">::</span><span class="tfree">'b</span> whle<span class="main">)</span> <span class="main">(</span><span class="bound">pinkW</span><span class="main">::</span><span class="tfree">'p</span> whle<span class="main">)</span> <span class="main">.</span>
        <span class="main">(</span> <span class="main">(</span><span class="bound">redW</span> <span class="main">≲</span> <span class="bound">blueW</span><span class="main">)</span> <span class="main">⟶</span> <span class="main">(</span> <span class="bound">pinkW</span> <span class="main">∘∘∘</span> <span class="bound">redW</span> <span class="main">≲</span> <span class="bound">pinkW</span> <span class="main">∘∘∘</span> <span class="bound">blueW</span><span class="main">)</span><span class="main">)</span>"</span></span>
   <span class="keyword2"><span class="keyword">and</span></span> transitivity <span class="main">[</span><span class="operator">simp</span><span class="main">,</span><span class="operator">trans</span><span class="main">]</span><span class="main">:</span> <span class="comment1">(* transitivity of trace relation for pink programs *)</span>
   <span class="quoted"><span class="quoted">"<span class="main">(</span><span class="free">W1</span><span class="main">::</span><span class="tfree">'p</span> whle<span class="main">)</span> <span class="main">≲</span> <span class="main">(</span><span class="free">W2</span><span class="main">::</span><span class="tfree">'p</span> whle<span class="main">)</span>
     <span class="main">⟹</span>  <span class="free">W2</span> <span class="main">≲</span> <span class="main">(</span><span class="free">W3</span><span class="main">::</span><span class="tfree">'p</span> whle<span class="main">)</span>  <span class="main">⟹</span> <span class="free">W1</span> <span class="main">≲</span> <span class="free">W3</span>"</span></span>
+
+ <span class="comment1">(* new axioms for dummy adversary theorem *)</span>
+<span class="keyword1"><span class="command">locale</span></span> dummy <span class="main">=</span>
+  <span class="comment1">(* dummy context and program *)</span>
+  <span class="keyword2"><span class="keyword">fixes</span></span> <span class="free">Pd</span><span class="main">::</span><span class="quoted"><span class="quoted">"<span class="tfree">'r</span> prgm"</span></span> <span class="comment1">(* Z→Pd ⇒ Z→Psub, A→Pd⇒ ?  , Psub→Pd⇒ Psub⇒Z, *)</span>
+  <span class="keyword2"><span class="keyword">fixes</span></span> <span class="free">Ad</span><span class="main">::</span><span class="quoted"><span class="quoted">"<span class="tfree">'r</span> ctxt"</span></span> <span class="comment1">(* Z→Ad ⇒ Z→P,    P→ Ad ⇒ P→Z *)</span>
+  <span class="keyword2"><span class="keyword">assumes</span></span> adv_split<span class="main">:</span>
+  <span class="quoted"><span class="quoted">" <span class="main">∀</span> <span class="bound">A</span> <span class="bound">P</span> <span class="main">.</span> <span class="main">∃</span> <span class="bound">A'</span> <span class="main">.</span> <span class="bound">A</span> <span class="main">&gt;&lt;</span> <span class="bound">P</span> <span class="main">≲</span> <span class="main">(</span><span class="bound">A'</span> <span class="main">&gt;&lt;</span> <span class="free">Pd</span><span class="main">)</span> <span class="main">∘∘∘</span> <span class="main">(</span><span class="free">Ad</span> <span class="main">&gt;&lt;</span> <span class="bound">P</span><span class="main">)</span>"</span></span> 
+  <span class="keyword2"><span class="keyword">and</span></span> adv_unsplit<span class="main">:</span>
+  <span class="quoted"><span class="quoted">" <span class="main">∀</span> <span class="bound">A1</span> <span class="main">(</span><span class="bound">A2</span><span class="main">::</span><span class="tfree">'b</span> ctxt<span class="main">)</span> <span class="main">(</span><span class="bound">P</span><span class="main">::</span><span class="tfree">'b</span> prgm<span class="main">)</span> <span class="main">.</span> <span class="main">∃</span> <span class="bound">A</span> <span class="main">.</span> <span class="main">(</span><span class="bound">A1</span> <span class="main">∥</span> <span class="bound">A2</span><span class="main">)</span> <span class="main">&gt;&lt;</span> <span class="main">(</span><span class="free">Pd</span> <span class="main">∘∘</span> <span class="bound">P</span><span class="main">)</span> <span class="main">≲</span> <span class="bound">A</span> <span class="main">&gt;&lt;</span> <span class="bound">P</span>"</span></span> 
+  <span class="keyword2"><span class="keyword">and</span></span>  const_elim2<span class="main">:</span> <span class="comment1">(* constant elimination for red contexts *)</span>
+  <span class="quoted"><span class="quoted">"<span class="main">∀</span> <span class="main">(</span><span class="bound">redW</span><span class="main">::</span><span class="tfree">'r</span> whle<span class="main">)</span> <span class="main">(</span><span class="bound">blueW</span><span class="main">::</span><span class="tfree">'b</span> whle<span class="main">)</span> <span class="main">(</span><span class="bound">W</span><span class="main">::</span><span class="tfree">'r</span> whle<span class="main">)</span> <span class="main">.</span>
+       <span class="main">(</span> <span class="main">(</span><span class="bound">redW</span> <span class="main">≲</span> <span class="bound">blueW</span><span class="main">)</span> <span class="main">⟶</span> <span class="main">(</span> <span class="bound">W</span> <span class="main">∘∘∘</span> <span class="bound">redW</span> <span class="main">≲</span> <span class="bound">W</span> <span class="main">∘∘∘</span> <span class="bound">blueW</span><span class="main">)</span><span class="main">)</span>"</span></span>
+  <span class="keyword2"><span class="keyword">and</span></span> inter_decomp2<span class="main">:</span> <span class="comment1">(* intertwined composition (for pink programs using blue programs) *)</span>
+  <span class="quoted"><span class="quoted">"<span class="main">∀</span> <span class="main">(</span><span class="bound">P1</span><span class="main">::</span><span class="tfree">'r</span> prgm<span class="main">)</span> <span class="main">(</span><span class="bound">P2</span><span class="main">::</span><span class="tfree">'b</span> prgm<span class="main">)</span> <span class="bound">A1</span> <span class="bound">A2</span><span class="main">.</span>
+    <span class="bound">A1</span> <span class="main">&gt;&lt;</span> <span class="bound">P1</span> <span class="main">∘∘∘</span> <span class="bound">A2</span> <span class="main">&gt;&lt;</span> <span class="bound">P2</span>  <span class="main">≲</span>  <span class="bound">A1</span> <span class="main">∥</span> <span class="bound">A2</span> <span class="main">&gt;&lt;</span> <span class="bound">P1</span> <span class="main">∘∘</span> <span class="bound">P2</span> "</span></span>
+  <span class="keyword2"><span class="keyword">and</span></span> transitivity2 <span class="main">[</span><span class="operator">trans</span><span class="main">]</span><span class="main">:</span> <span class="comment1">(* transitivity of trace relation for red programs *)</span>
+  <span class="quoted"><span class="quoted">"<span class="main">(</span><span class="free">W1</span><span class="main">::</span><span class="tfree">'r</span> whle<span class="main">)</span> <span class="main">≲</span> <span class="main">(</span><span class="free">W2</span><span class="main">::</span><span class="tfree">'r</span> whle<span class="main">)</span>
+    <span class="main">⟹</span>  <span class="free">W2</span> <span class="main">≲</span> <span class="main">(</span><span class="free">W3</span><span class="main">::</span><span class="tfree">'r</span> whle<span class="main">)</span>  <span class="main">⟹</span> <span class="free">W1</span> <span class="main">≲</span> <span class="free">W3</span>"</span></span>
+
+
+<span class="keyword1"><span class="command">context</span></span> dummy
+<span class="keyword2"><span class="keyword">begin</span></span>
+
+<span class="comment1">(*
+declare [[show_types]]
+
+theorem dummy:
+  fixes P::"'r prgm"
+  fixes F::"'b prgm"
+  assumes A: " ∃ (S::'b ctxt) . Ad &gt;&lt; P ≲ S &gt;&lt; F"
+  assumes transitivity3 : (* transitivity of trace relation for red programs *)
+  "(W1::'r whle) ≲ (W2::'r whle)
+    ⟹  W2 ≲ (W3::'b whle)  ⟹ W1 ≲ W3"
+shows "∀ (A::'r ctxt). ∃ (S::'b ctxt) . A &gt;&lt; P ≲ S &gt;&lt; F"
+proof
+  fix A 
+  from adv_split obtain A' where "A &gt;&lt; P ≲ (A' &gt;&lt; Pd) ∘∘∘ (Ad &gt;&lt; P)" by auto
+  also obtain S where "... ≲ (A' &gt;&lt; Pd) ∘∘∘ (S &gt;&lt; F)" using A const_elim2 by blast
+  also have "... ≲ ((A' ∥ S) &gt;&lt; (Pd ∘∘ F))" using inter_decomp2 by blast
+  finally have Almost:"A &gt;&lt; P ≲ ((A' ∥ S) &gt;&lt; (Pd ∘∘ F))".
+  then have Trans:"∀ W3. ((A' ∥ S) &gt;&lt; (Pd ∘∘ F)) ≲ W3 ⟶  A &gt;&lt; P ≲ W3" using transitivity3 by blast
+  (* somethings odd about transitivity ... Trans is a crutch because we could not have 
+  transitivity3 in the "also have" chain *)
+
+  obtain S' where "((A' ∥ S) &gt;&lt; (Pd ∘∘ F)) ≲ S' &gt;&lt; F" using adv_unsplit by blast
+  from this Trans have "A &gt;&lt; P ≲ S' &gt;&lt; F" by fastforce
+  thus "∃ (S::'b ctxt) . A &gt;&lt; P ≲ S &gt;&lt; F" by auto
+ qed
+*)</span>
+<span class="keyword2"><span class="keyword">end</span></span>
 
 <span class="keyword1"><span class="command">context</span></span> composition
 <span class="keyword2"><span class="keyword">begin</span></span>
@@ -293,7 +342,7 @@
 
 <span class="keyword2"><span class="keyword">end</span></span>
 
-<span class="keyword1"><span class="command">section</span></span> <span class="quoted"><span class="plain_text">"Same of RHP"</span></span>
+<span class="keyword1"><span class="command">section</span></span> <span class="quoted"><span class="plain_text">"Relating UC to RHP"</span></span>
 
 <span class="keyword1"><span class="command">abbreviation</span></span> <span class="entity">RHPrel</span>
   <span class="keyword2"><span class="keyword">where</span></span>
@@ -407,7 +456,7 @@ proof
 qed
 *)</span>
 
-<span id="UC"><span class="keyword1"><span class="command">theorem</span></span> <span class="main">(</span><span class="keyword2"><span class="keyword">in</span></span> UC<span class="main">)</span> implement_UC_result<span class="main">:</span> 
+<span id="UC"><span class="keyword1"><span class="command">theorem</span></span> <span class="main">(</span><span class="keyword2"><span class="keyword">in</span></span> UC<span class="main">)</span> implementUC<span class="main">:</span> 
 </span>  <span class="keyword2"><span class="keyword">fixes</span></span> <span class="free">UCC</span><span class="main">::</span><span class="quoted"><span class="quoted">"<span class="main">(</span><span class="tfree">'uc</span><span class="main">,</span><span class="tfree">'uc</span><span class="main">)</span> comp"</span></span> <span class="comment1">(* This can be seen as one for more UC results. *)</span>
   <span class="keyword2"><span class="keyword">fixes</span></span> <span class="free">C1</span> <span class="main">::</span><span class="quoted"><span class="quoted">"<span class="main">(</span><span class="tfree">'b</span> <span class="main">,</span><span class="tfree">'uc</span><span class="main">)</span> comp"</span></span>  
   <span class="keyword2"><span class="keyword">fixes</span></span> <span class="free">C2</span> <span class="main">::</span><span class="quoted"><span class="quoted">"<span class="main">(</span><span class="tfree">'uc</span><span class="main">,</span><span class="tfree">'r</span> <span class="main">)</span> comp"</span></span>  
@@ -418,7 +467,24 @@ qed
   <span class="keyword2"><span class="keyword">shows</span></span> <span class="quoted"><span class="quoted">"RSCHP <span class="main">(</span><span class="free">C2</span> <span class="main">∘</span> <span class="free">UCC</span> <span class="main">∘</span> <span class="free">C1</span><span class="main">)</span> <span class="free">ttype</span>"</span></span>
 <span class="keyword1"><span class="command">using</span></span> UCtoRSCHP AUCC AC1 AC2
    <span class="keyword1"><span class="command">by</span></span> <span class="main">(</span><span class="operator">metis</span> comp_apply<span class="main">)</span> 
- 
+
+
+<span class="comment1">(* TODO Theorem 4 atm invalid, no error symbol.
+theorem (in UC) UC_compiler:
+  fixes UCC::"('uc,'uc) comp" (* This can be seen as one for more UC results. *)
+  fixes C1 ::"('b ,'uc) comp"  
+  fixes C2 ::"('uc,'r ) comp"  
+  fixes ttype :: "('t × real) itself"  
+  assumes AC1:  "RSCHP C1 ttype"
+  assumes AC2:  "RSCHP C2 ttype"
+  fixes F:"'uc prgm"
+  fixes PF:"'b prgm"
+  fixes pi:"'uc prgm"
+  fixes Ppi:"'r prgm"
+  assumes "C1 PF = F"
+  assumes "C2 pi = Rpi"
+*)</span>    
+
 <span class="keyword2"><span class="keyword">end</span></span>
 
 </pre>
