@@ -456,7 +456,9 @@ proof
 qed
 *)</span>
 
-<span id="UC"><span class="keyword1"><span class="command">theorem</span></span> <span class="main">(</span><span class="keyword2"><span class="keyword">in</span></span> UC<span class="main">)</span> implementUC<span class="main">:</span> 
+<span class="keyword1"><span class="command">context</span></span> UC
+<span class="keyword2"><span class="keyword">begin</span></span>
+<span id="implementUC"><span class="keyword1"><span class="command">theorem</span></span> implementUC<span class="main">:</span> 
 </span>  <span class="keyword2"><span class="keyword">fixes</span></span> <span class="free">UCC</span><span class="main">::</span><span class="quoted"><span class="quoted">"<span class="main">(</span><span class="tfree">'uc</span><span class="main">,</span><span class="tfree">'uc</span><span class="main">)</span> comp"</span></span> <span class="comment1">(* This can be seen as one for more UC results. *)</span>
   <span class="keyword2"><span class="keyword">fixes</span></span> <span class="free">C1</span> <span class="main">::</span><span class="quoted"><span class="quoted">"<span class="main">(</span><span class="tfree">'b</span> <span class="main">,</span><span class="tfree">'uc</span><span class="main">)</span> comp"</span></span>  
   <span class="keyword2"><span class="keyword">fixes</span></span> <span class="free">C2</span> <span class="main">::</span><span class="quoted"><span class="quoted">"<span class="main">(</span><span class="tfree">'uc</span><span class="main">,</span><span class="tfree">'r</span> <span class="main">)</span> comp"</span></span>  
@@ -468,6 +470,7 @@ qed
 <span class="keyword1"><span class="command">using</span></span> UCtoRSCHP AUCC AC1 AC2
    <span class="keyword1"><span class="command">by</span></span> <span class="main">(</span><span class="operator">metis</span> comp_apply<span class="main">)</span> 
 
+<span class="keyword2"><span class="keyword">end</span></span>
 
 <span class="comment1">(* TODO Theorem 4 atm invalid, no error symbol.
 theorem (in UC) UC_compiler:
