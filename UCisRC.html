@@ -135,7 +135,7 @@ proof
 
 <span class="keyword2"><span class="keyword">end</span></span>
 
-<span class="keyword1"><span class="command">section</span></span> <span class="quoted"><span class="plain_text">"Relating UC to RSCH"</span></span>
+<span class="keyword1"><span class="command">section</span></span> <span class="quoted"><span class="plain_text">"Relating UC to RSCP"</span></span>
 
 <span class="keyword1"><span class="command">type_synonym</span></span> <span class="main">(</span><span class="tfree">'b</span><span class="main">,</span><span class="tfree">'r</span><span class="main">)</span> comp <span class="main">=</span> <span class="quoted"><span class="quoted">"<span class="tfree">'b</span> prgm <span class="main">⇒</span> <span class="tfree">'r</span> prgm"</span></span>
 
@@ -422,12 +422,11 @@ proof
 <span class="keyword1"><span class="command">qed</span></span>
 
 <span class="comment1">(* First, we need transitivity for RSCHPrel. *)</span>
-<span class="comment1">(* TODO, later see if we can generalise to traces that projects of UC *)</span>
-<span class="keyword1"><span class="command">lemma</span></span> RSCHPrel <span class="main">[</span><span class="operator">simp</span><span class="main">,</span><span class="operator">trans</span><span class="main">]</span><span class="main">:</span>
+<span class="keyword1"><span class="command">lemma</span></span> RHPrel <span class="main">[</span><span class="operator">simp</span><span class="main">,</span><span class="operator">trans</span><span class="main">]</span><span class="main">:</span>
   <span class="keyword2"><span class="keyword">fixes</span></span> <span class="free">ttype</span> <span class="main">::</span> <span class="quoted"><span class="quoted">"<span class="main">(</span><span class="tfree">'t</span> <span class="main">×</span> real<span class="main">)</span> itself"</span></span> 
-  <span class="keyword2"><span class="keyword">assumes</span></span> A1<span class="main">:</span><span class="quoted"><span class="quoted">"RSCHPrel <span class="free">ttype</span> <span class="free">a</span> <span class="free">b</span>"</span></span>
-  <span class="keyword2"><span class="keyword">assumes</span></span> A2<span class="main">:</span><span class="quoted"><span class="quoted">"RSCHPrel <span class="free">ttype</span> <span class="free">b</span> <span class="free">c</span>"</span></span>
-  <span class="keyword2"><span class="keyword">shows</span></span> <span class="quoted"><span class="quoted">"RSCHPrel <span class="free">ttype</span> <span class="free">a</span> <span class="free">c</span>"</span></span>
+  <span class="keyword2"><span class="keyword">assumes</span></span> A1<span class="main">:</span><span class="quoted"><span class="quoted">"RHPrel <span class="free">ttype</span> <span class="free">a</span> <span class="free">b</span>"</span></span>
+  <span class="keyword2"><span class="keyword">assumes</span></span> A2<span class="main">:</span><span class="quoted"><span class="quoted">"RHPrel <span class="free">ttype</span> <span class="free">b</span> <span class="free">c</span>"</span></span>
+  <span class="keyword2"><span class="keyword">shows</span></span> <span class="quoted"><span class="quoted">"RHPrel <span class="free">ttype</span> <span class="free">a</span> <span class="free">c</span>"</span></span>
 <span class="keyword1"><span class="command">using</span></span> A1 A2 <span class="keyword1"><span class="command">by</span></span> <span class="operator">blast</span>   
 
 <span class="comment1">(* longer version of theorem below *)</span>
@@ -464,10 +463,10 @@ qed
   <span class="keyword2"><span class="keyword">fixes</span></span> <span class="free">C2</span> <span class="main">::</span><span class="quoted"><span class="quoted">"<span class="main">(</span><span class="tfree">'uc</span><span class="main">,</span><span class="tfree">'r</span> <span class="main">)</span> comp"</span></span>  
   <span class="keyword2"><span class="keyword">fixes</span></span> <span class="free">ttype</span> <span class="main">::</span> <span class="quoted"><span class="quoted">"<span class="main">(</span><span class="tfree">'t</span> <span class="main">×</span> real<span class="main">)</span> itself"</span></span>  
   <span class="keyword2"><span class="keyword">assumes</span></span> AUCC<span class="main">:</span> <span class="quoted"><span class="quoted">"<span class="main">∀</span> <span class="main">(</span><span class="bound">P</span><span class="main">::</span><span class="tfree">'uc</span> prgm<span class="main">)</span> <span class="main">.</span> <span class="main">(</span><span class="free">UCC</span> <span class="bound">P</span><span class="main">)</span> <span class="keyword1">UC-emulates</span> <span class="bound">P</span>"</span></span>
-  <span class="keyword2"><span class="keyword">assumes</span></span> AC1<span class="main">:</span>  <span class="quoted"><span class="quoted">"RSCHP <span class="free">C1</span> <span class="free">ttype</span>"</span></span>
-  <span class="keyword2"><span class="keyword">assumes</span></span> AC2<span class="main">:</span>  <span class="quoted"><span class="quoted">"RSCHP <span class="free">C2</span> <span class="free">ttype</span>"</span></span>
-  <span class="keyword2"><span class="keyword">shows</span></span> <span class="quoted"><span class="quoted">"RSCHP <span class="main">(</span><span class="free">C2</span> <span class="main">∘</span> <span class="free">UCC</span> <span class="main">∘</span> <span class="free">C1</span><span class="main">)</span> <span class="free">ttype</span>"</span></span>
-<span class="keyword1"><span class="command">using</span></span> UCtoRSCHP AUCC AC1 AC2
+  <span class="keyword2"><span class="keyword">assumes</span></span> AC1<span class="main">:</span>  <span class="quoted"><span class="quoted">"RHP <span class="free">C1</span> <span class="free">ttype</span>"</span></span>
+  <span class="keyword2"><span class="keyword">assumes</span></span> AC2<span class="main">:</span>  <span class="quoted"><span class="quoted">"RHP <span class="free">C2</span> <span class="free">ttype</span>"</span></span>
+  <span class="keyword2"><span class="keyword">shows</span></span> <span class="quoted"><span class="quoted">"RHP <span class="main">(</span><span class="free">C2</span> <span class="main">∘</span> <span class="free">UCC</span> <span class="main">∘</span> <span class="free">C1</span><span class="main">)</span> <span class="free">ttype</span>"</span></span>
+<span class="keyword1"><span class="command">using</span></span> UCtoRHP AUCC AC1 AC2
    <span class="keyword1"><span class="command">by</span></span> <span class="main">(</span><span class="operator">metis</span> comp_apply<span class="main">)</span> 
 
 <span class="keyword2"><span class="keyword">end</span></span>
