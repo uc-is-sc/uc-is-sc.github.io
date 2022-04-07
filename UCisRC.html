@@ -64,7 +64,7 @@
 <span class="keyword1"><span class="command">context</span></span> composition
 <span class="keyword2"><span class="keyword">begin</span></span>
 
-<span id=composition><span class="keyword1"><span class="command">theorem</span></span> composition<span class="main">:</span>
+<span id="composition"><span class="keyword1"><span class="command">theorem</span></span> composition<span class="main">:</span>
 </span>  <span class="keyword2"><span class="keyword">fixes</span></span> <span class="free">P</span><span class="main">::</span><span class="quoted"><span class="quoted">"<span class="tfree">'r</span> prgm"</span></span>
   <span class="keyword2"><span class="keyword">fixes</span></span> <span class="free">F</span><span class="main">::</span><span class="quoted"><span class="quoted">"<span class="tfree">'b</span> prgm"</span></span>
   <span class="keyword2"><span class="keyword">fixes</span></span> <span class="free">R</span><span class="main">::</span><span class="quoted"><span class="quoted">"<span class="tfree">'p</span> prgm"</span></span>
@@ -213,7 +213,7 @@
   <span class="keyword1"><span class="command">qed</span></span>
 <span class="keyword1"><span class="command">qed</span></span>
 
-<span id=RSCHPtoUC><span class="keyword1"><span class="command">theorem</span></span> RSCHPtoUC<span class="main">:</span>
+<span id="RSCHPtoUC"><span class="keyword1"><span class="command">theorem</span></span> RSCHPtoUC<span class="main">:</span>
 </span>  <span class="keyword2"><span class="keyword">fixes</span></span> <span class="free">C</span> <span class="main">::</span><span class="quoted"><span class="quoted">"<span class="main">(</span><span class="tfree">'uc</span><span class="main">,</span><span class="tfree">'uc</span><span class="main">)</span> comp"</span></span>
   <span class="keyword2"><span class="keyword">fixes</span></span> <span class="free">ttype</span> <span class="main">::</span> <span class="quoted"><span class="quoted">"<span class="main">(</span><span class="tfree">'t</span> <span class="main">×</span> real<span class="main">)</span> itself"</span></span>
   <span class="keyword2"><span class="keyword">assumes</span></span> A<span class="main">:</span> <span class="quoted"><span class="quoted">"RSCHP <span class="free">C</span> <span class="free">ttype</span>"</span></span>
@@ -256,7 +256,7 @@
 <span class="keyword1"><span class="command">qed</span></span> 
 <span class="keyword1"><span class="command">qed</span></span>
 
-<span id=UCtoRSCHP><span class="keyword1"><span class="command">theorem</span></span> UCtoRSCHP<span class="main">:</span>
+<span id="UCtoRSCHP"><span class="keyword1"><span class="command">theorem</span></span> UCtoRSCHP<span class="main">:</span>
 </span>  <span class="keyword2"><span class="keyword">fixes</span></span> <span class="free">C</span> <span class="main">::</span><span class="quoted"><span class="quoted">"<span class="main">(</span><span class="tfree">'uc</span><span class="main">,</span><span class="tfree">'uc</span><span class="main">)</span> comp"</span></span>
   <span class="keyword2"><span class="keyword">fixes</span></span> <span class="free">ttype</span> <span class="main">::</span> <span class="quoted"><span class="quoted">"<span class="main">(</span><span class="tfree">'t</span> <span class="main">×</span> real<span class="main">)</span> itself"</span></span>
   <span class="keyword2"><span class="keyword">assumes</span></span> A1<span class="main">:</span> <span class="quoted"><span class="quoted">"<span class="main">∀</span> <span class="main">(</span><span class="bound">P</span><span class="main">::</span><span class="tfree">'uc</span> prgm<span class="main">)</span> <span class="main">.</span> <span class="main">(</span><span class="free">C</span> <span class="bound">P</span><span class="main">)</span> <span class="keyword1">UC-emulates</span> <span class="bound">P</span>"</span></span>
@@ -307,14 +307,14 @@
 <span class="keyword1"><span class="command">context</span></span> UC 
 <span class="keyword2"><span class="keyword">begin</span></span>
 
-<span id=RHPtoUC><span class="keyword1"><span class="command">theorem</span></span> RHPtoUC<span class="main">:</span>
+<span id="RHPtoUC"><span class="keyword1"><span class="command">theorem</span></span> RHPtoUC<span class="main">:</span>
 </span>  <span class="keyword2"><span class="keyword">fixes</span></span> <span class="free">C</span> <span class="main">::</span><span class="quoted"><span class="quoted">"<span class="main">(</span><span class="tfree">'uc</span><span class="main">,</span><span class="tfree">'uc</span><span class="main">)</span> comp"</span></span>
   <span class="keyword2"><span class="keyword">fixes</span></span> <span class="free">ttype</span> <span class="main">::</span> <span class="quoted"><span class="quoted">"<span class="main">(</span><span class="tfree">'t</span> <span class="main">×</span> real<span class="main">)</span> itself"</span></span>
   <span class="keyword2"><span class="keyword">assumes</span></span> A<span class="main">:</span> <span class="quoted"><span class="quoted">"RHP <span class="free">C</span> <span class="free">ttype</span>"</span></span>
   <span class="keyword2"><span class="keyword">shows</span></span> <span class="quoted"><span class="quoted">"<span class="main">∀</span> <span class="main">(</span><span class="bound">P</span><span class="main">::</span><span class="tfree">'uc</span> prgm<span class="main">)</span> <span class="main">.</span> <span class="main">(</span><span class="free">C</span> <span class="bound">P</span><span class="main">)</span> <span class="keyword1">UC-emulates</span> <span class="bound">P</span>"</span></span>
 <span class="keyword1"><span class="command">using</span></span> RSCHPtoUC assms <span class="keyword1"><span class="command">by</span></span> <span class="operator">blast</span>
 
-<span id=UCtoRHP><span class="keyword1"><span class="command">theorem</span></span> UCtoRHP<span class="main">:</span>
+<span id="UCtoRHP"><span class="keyword1"><span class="command">theorem</span></span> UCtoRHP<span class="main">:</span>
 </span>  <span class="keyword2"><span class="keyword">fixes</span></span> <span class="free">C</span> <span class="main">::</span><span class="quoted"><span class="quoted">"<span class="main">(</span><span class="tfree">'uc</span><span class="main">,</span><span class="tfree">'uc</span><span class="main">)</span> comp"</span></span>
   <span class="keyword2"><span class="keyword">fixes</span></span> <span class="free">ttype</span> <span class="main">::</span> <span class="quoted"><span class="quoted">"<span class="main">(</span><span class="tfree">'t</span> <span class="main">×</span> real<span class="main">)</span> itself"</span></span>
   <span class="keyword2"><span class="keyword">assumes</span></span> A1<span class="main">:</span> <span class="quoted"><span class="quoted">"<span class="main">∀</span> <span class="main">(</span><span class="bound">P</span><span class="main">::</span><span class="tfree">'uc</span> prgm<span class="main">)</span> <span class="main">.</span> <span class="main">(</span><span class="free">C</span> <span class="bound">P</span><span class="main">)</span> <span class="keyword1">UC-emulates</span> <span class="bound">P</span>"</span></span>
@@ -407,7 +407,7 @@ proof
 qed
 *)</span>
 
-<span id=UC><span class="keyword1"><span class="command">theorem</span></span> <span class="main">(</span><span class="keyword2"><span class="keyword">in</span></span> UC<span class="main">)</span> implement_UC_result<span class="main">:</span> 
+<span id="UC"><span class="keyword1"><span class="command">theorem</span></span> <span class="main">(</span><span class="keyword2"><span class="keyword">in</span></span> UC<span class="main">)</span> implement_UC_result<span class="main">:</span> 
 </span>  <span class="keyword2"><span class="keyword">fixes</span></span> <span class="free">UCC</span><span class="main">::</span><span class="quoted"><span class="quoted">"<span class="main">(</span><span class="tfree">'uc</span><span class="main">,</span><span class="tfree">'uc</span><span class="main">)</span> comp"</span></span> <span class="comment1">(* This can be seen as one for more UC results. *)</span>
   <span class="keyword2"><span class="keyword">fixes</span></span> <span class="free">C1</span> <span class="main">::</span><span class="quoted"><span class="quoted">"<span class="main">(</span><span class="tfree">'b</span> <span class="main">,</span><span class="tfree">'uc</span><span class="main">)</span> comp"</span></span>  
   <span class="keyword2"><span class="keyword">fixes</span></span> <span class="free">C2</span> <span class="main">::</span><span class="quoted"><span class="quoted">"<span class="main">(</span><span class="tfree">'uc</span><span class="main">,</span><span class="tfree">'r</span> <span class="main">)</span> comp"</span></span>  
