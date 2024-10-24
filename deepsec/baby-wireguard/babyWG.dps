@@ -1,0 +1,78 @@
+// Wireguard Payload Protocol in DeepSec
+
+(* public channels *)
+free e2s, e2r.
+
+(* private channels *)
+free s2c, r2c, sims2simr [private].
+
+(* private channels for wrapper *)
+free w2s, w2r [private].
+
+(* symbols *)
+const empty.
+
+(* counter *)
+const c0, c1, c2.
+
+(* authenticated encryption *)
+fun aenc/4.
+reduc adec(key, nonce, aenc(key, nonce, plaintext, empty)) -> plaintext.
+
+fun counter_to_nonce/1.
+fun zero/1.
+
+let Wrapper =
+    in(e2s, x1);
+    out(w2s, x1);
+    in(w2s, x2);
+    out(e2s,x2);
+    in(e2r, x3);
+    out(w2r, x3);
+    in(w2r, x4);
+    out(e2r, x4).
+
+let Sender(key, counter) = 
+    in(w2s, x1); 
+    let (message, c) = x1 in
+    if c = counter then (
+        let ciphertext = aenc(key, counter_to_nonce(counter), message, empty) in
+        out(w2s, ciphertext)
+    ) else (
+        0
+    ).
+
+let Receiver(key, counter) =
+    in(w2r, x1);
+    let (ciphertext, =counter) = x1 in
+    let plaintext = adec(key, counter_to_nonce(counter), ciphertext) in
+    out(w2r, plaintext).
+
+let Sim(counter) = 
+    in(w2r, x1);
+    let (ciphertext, =counter) = x1 in
+    in(sims2simr, x2);
+    let (=counter, =ciphertext, message) = x2 in
+    out(w2r, message).
+
+let SenderF(key, counter) =
+    in(w2s, x1); let (message,c) = x1 in 
+    if c = counter then (
+        let zm = zero(message) in
+        let ciphertext = aenc(key, counter_to_nonce(counter), zm, empty) in
+        out(w2s, ciphertext);
+        out(sims2simr, (counter, ciphertext, message))
+    ) else (
+        0
+    ).
+
+let Senders(key) =  Sender(key, c0) | Sender(key, c1).
+let Receivers(key) =  Receiver(key, c0) | Receiver(key, c1).
+let Wrappers = Wrapper() | Wrapper().
+
+let Simulator(key, counter) = (Sim(counter) | SenderF(key, counter) | Wrapper()).
+
+let real = new k; (Senders(k) | Receivers(k) | Wrappers()).
+let ideal = new k; (Simulator(k, c0) | Simulator(k, c1)).
+
+query trace_equiv(ideal, real).

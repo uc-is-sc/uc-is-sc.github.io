@@ -1,0 +1,78 @@
+// Wireguard Payload Protocol in DeepSec
+
+(* public channels *)
+free e2s, e2r.
+
+(* private channels *)
+free s2c, r2c, sims2sync, simr2sync [private].
+
+(* private channels for wrapper *)
+free w2s, w2r [private].
+
+(* symbols *)
+const empty.
+
+(* counter *)
+const c0, c1, c2.
+
+(* authenticated encryption *)
+fun aenc/4.
+reduc adec(key, nonce, aenc(key, nonce, plaintext, empty)) -> plaintext.
+
+fun counter_to_nonce/1.
+fun zero/1.
+
+let Sender(key, counter) = 
+    in(e2s, x1); 
+    let (message, c) = x1 in
+    if c = counter then (
+        let ciphertext = aenc(key, counter_to_nonce(counter), message, empty) in
+        out(e2s, ciphertext)
+    ) else (
+        0
+    ).
+
+let Receiver(key, counter) =
+    in(e2r, x1);
+    let (ciphertext, =counter) = x1 in
+    let plaintext = adec(key, counter_to_nonce(counter), ciphertext) in
+    out(e2r, plaintext).
+
+(* helper to synchronise between simulator subprocesses *)
+let SimSync =
+    in(sims2sync, x);
+    out(simr2sync, x).
+
+let Sim(counter) = 
+    in(e2r, x1);
+    let (ciphertext, =counter) = x1 in
+    in(simr2sync, x2);
+    let (=counter, =ciphertext, message) = x2 in
+    out(e2r, message).
+
+let SenderF(key, counter) =
+    in(e2s, x1); let (message,c) = x1 in 
+    if c = counter then (
+        let zm = zero(message) in
+        let ciphertext = aenc(key, counter_to_nonce(counter), zm, empty) in
+        out(sims2sync, (counter, ciphertext, message));
+        out(e2s, ciphertext)
+    ) else (
+        0
+    ).
+
+let Senders(key) =  Sender(key, c0) | Sender(key, c1).
+let Receivers(key) =  Receiver(key, c0) | Receiver(key, c1).
+
+let Simulator(key, counter) = (Sim(counter) | SenderF(key, counter) | SimSync()).
+
+let real = new k; (Senders(k) | Receivers(k)).
+let ideal = new k; (Simulator(k, c0) | Simulator(k, c1)
+
+let test_send_real = new k; Sender(k, c0).
+let test_send_ideal = new k; SenderF(k, c0).
+
+let test_recv_real = new k; Receiver(k, c0).
+let test_recv_ideal = new k; Sim(c0).
+
+query trace_equiv(ideal, real).
