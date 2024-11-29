@@ -1,0 +1,218 @@
+// Simple examples showing UC / RSCHP in deepsec
+
+// We, we introduce communication channels under the environment's control.
+// We reserve the nice names env and adv for the protocol and, for the moment,
+// do not distinguish incoming and outgoing channels, although this can speed
+// up deepsecs analysis.
+
+(* public channels, wrapper *)
+free 
+     e2p
+   , p2e
+   , q2e
+   , e2s
+   , s2e [private]
+   . 
+
+(* public channels, given *)
+free e2z,z2e . 
+
+(* private channels (real) *)
+free 
+     p2q
+   , p2s
+   , s2p
+   , q2s
+   , s2q[private]
+.
+
+(* private channels (extra ideal ones)*)
+free 
+     p2f
+   , f2a
+   , p2a
+   , a2p
+   , a2q
+   , a2s
+   , s2a
+   [private]
+.
+   (* legend: 
+        e .. env
+        p .. protocol: committer
+        q .. protocol: receiver
+        a .. attacker
+        s .. subprotocol (CRS) 
+    *)
+
+fun xor/2.
+reduc dexor1(a,xor(a,b)) -> b.
+reduc dexor2(b,xor(a,b)) -> a.
+
+fun prg/2. (* prg(key,seed) represent PRG with trapdoor hidden in key *)
+fun keygen/1.
+(* example: *)
+(* reduc adec( aenc(pk(sk),m), sk ) -> m. *)
+(* first draft *)
+reduc invert(prg(keygen(trapdoor),seed),trapdoor) -> seed. 
+
+const Commit, Commit2, Commited, Open, Open2, Opened, Receipt, GetCRS, WaitCRS, Waited, StartCRS, Started, PublicStrings, Error. // messages
+const FakeSetup, Fake. // internal message of simulator
+const Ok.
+const Ack.
+
+const zero.
+(* const one. *) (* every value that  is not zero is interpreted as one *)
+
+let bridge(cin,cout) = in(cin,x); out(cout,x).
+
+// dummy attacker. Note that we need to bound sessions, so we chose 3.
+let dum(a2p,p2a,e2a,a2e) =
+                   !^3 bridge(e2a,a2p)
+                 | !^3 bridge(p2a,a2e)
+.
+
+// Protocol 
+
+let committer() =
+    in(e2p, cor); (* ignored: only support static corruption; everybody's honest *)
+    out(p2e, Ok);
+    (* then continue as P *)
+    in(e2p, x3); let (=Commit, b) = x3 in
+    out(p2s, GetCRS);
+    in(s2p, x4); let (=PublicStrings, s, pk0, pk1) = x4 in
+    new r;
+    if b=zero then (
+        out(p2q, (Commit2,prg(pk0,r)));
+        in(e2p, x5); let =Open = x5 in
+        out(p2q, (Open2,b,r))
+        )
+    else (
+        out(p2q, (Commit2,xor(prg(pk1,r),s)));
+        in(e2p, x6); let =Open = x6 in
+        out(p2q, (Open2,b,r))
+        )
+.
+
+let receiver() =
+    in(p2q, x7); let (=Commit2, y) = x7 in
+    out(q2s, GetCRS);
+    in(s2q, x8); let (=PublicStrings, s, pk0, pk1) = x8 in
+    out(q2e, Receipt);
+    in(p2q, x9); let (=Open2, b, r) = x9 in
+    if b=zero then (
+        if y= prg(pk0,r) then
+            out(q2e, (Opened, b))
+        else
+            out(q2e, Error)
+            )
+    else (
+        if y= xor(prg(pk1,r),s) then
+            out(q2e, (Opened, b))
+        else
+            out(q2e, Error)
+            )
+.
+
+let CRS() =
+    in(e2s, x11); let =GetCRS = x11 in
+    new s;
+    new tr0;
+    new tr1;
+    out(s2e, (PublicStrings, s, keygen(tr0), keygen(tr1)));
+    in(p2s, x13); let =GetCRS = x13 in
+    out(s2p, (PublicStrings, s, keygen(tr0), keygen(tr1)));
+    in(q2s, x14); let =GetCRS = x14 in
+    out(s2q, (PublicStrings, s, keygen(tr0), keygen(tr1)));
+    0
+.
+
+// Ideal Functionality
+
+let dummy_committer =
+    in(e2p, cor); (* ignored: only support static corruption; everybody's honest *)
+    out(p2a,cor);
+    in(a2p, xcor); (* ignored *)
+    out(p2a, Ack);
+    in(a2p, x18); let =Ok = x18 in
+    out(p2e,Ok); (* NOTE Idk if this goes here or before out(Waited) *)
+    in(s2p, x15); let =WaitCRS = x15 in 
+    out(p2s, Waited);
+    (* bridge twice *)
+    in(e2p,x24); out(p2f,x24);
+    in(e2p,x25); out(p2f,x25);
+    0
+    .
+
+let dummy_receiver = 
+    (* !^2 bridge(a2q,q2e) *)
+    in(a2q,x26); out(q2e,x26);
+    in(a2q,x27); out(q2e,x27);
+    0
+    .
+
+let sim = 
+    in(p2a,cor); (* ignored *)
+    out(a2p,cor);
+    in(p2a,x16); let =Ack = x16 in
+    out(a2s,FakeSetup);
+    in(s2a,x17); let (=Fake, pk0, pk1, td0, td1, s)  = x17 in
+    out(a2p,Ok);
+    (* in(f2a,x19); let =Receipt = x19 in *) (* covered by bridge below *)
+    (* out(a2q,Receipt); *)
+    (* !^2 bridge(f2a,a2q) *)
+    in(f2a,x28); out(a2q,x28);
+    in(f2a,x29); out(a2q,x29);
+    0
+    .
+
+(* TODO: UC folks would expect this as part of sim, refactor after things work *)
+let fakecrs = 
+    in(a2s,x19); let =FakeSetup = x19 in
+    new td0;
+    new td1;
+    new r0;
+    new r1;
+    let pk0 = keygen(td0) in
+    let pk1 = keygen(td1) in
+    let fake_s = xor(prg(pk0,r0),prg(pk1,r1)) in
+    out(s2a, (Fake, pk0, pk1, td0, td1, fake_s));
+    in(e2s, x20); let =GetCRS = x20 in
+    out(s2p, WaitCRS);
+    in(p2s, x21); let =Waited = x21 in 
+    out(s2e, (PublicStrings, fake_s, pk0, pk1))
+    .
+
+let COM = 
+    in(p2f,x22); let (=Commit,b) = x22 in
+    out(f2a,Receipt);
+    in(p2f,x23); let =Open = x23 in
+    out(f2a,(Opened,b))
+    .
+
+let env = 
+    in(z2e,x30corrupt);
+    out(e2p,x30corrupt);
+    in(p2e,x31ok);
+    out(e2z,x31ok);
+    in(z2e,x32getcrs);
+    out(e2s,x32getcrs);
+    in(s2e,x33pubstrings);
+    out(e2z,x33pubstrings);
+    in(z2e,x34commit);
+    out(e2p,x34commit);
+    in(q2e,x35receipt);
+    out(e2z,x35receipt);
+    in(z2e,x36open);
+    out(e2p,x36open);
+    in(q2e,x37opened);
+    out(e2z,x37opened);
+    0
+    .
+
+let realw = env | committer | receiver | CRS.
+let idealw = env |  dummy_committer | dummy_receiver | COM | sim | fakecrs . 
+(* TODO where is CRS in idealw? it receives msg from env via channel e2s *)
+
+query trace_equiv(idealw,realw).
+
